@@ -10,6 +10,7 @@ export const IMG = {
 export const COMPANY = {
   name: "Jaishree Enterprise",
   email: "jaishreeenterprise@yahoo.com",
+  indiamart: "https://www.indiamart.com/jaishree-enterprise-ahmedabad/",
   addressLines: ["Tavdipura, Shahibaug", "Ahmedabad, Gujarat, India"],
   founded: "1983",
 };

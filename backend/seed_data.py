@@ -51,7 +51,13 @@ PRODUCTS = [
             {"label": "Required tolerance", "value": "Per approved drawing"},
             {"label": "Drawing or sample reference", "value": "Accepted — PDF, DWG, DXF or physical sample"},
         ],
-        "gallery": ["/images/sleeve-family.jpg", "/images/sleeve-installed.jpg", "/images/sleeve-unit.jpg", "/images/sleeve-cad-flow.webp", "/images/sleeve-cad-render.jpeg"],
+        "gallery": [
+            {"src": "/images/sleeve-family.jpg", "caption": "Calibration sleeve family — multiple diameters"},
+            {"src": "/images/sleeve-installed.jpg", "caption": "D110 PE sleeve installed on line"},
+            {"src": "/images/sleeve-unit.jpg", "caption": "Brass calibration sleeve with cooling connections"},
+            {"src": "/images/sleeve-cad-flow.webp", "caption": "Engineering render — cooling flow paths"},
+            {"src": "/images/sleeve-cad-render.jpeg", "caption": "Engineering render — sleeve and mounting plate"},
+        ],
         "real_photos": True,
         "seo": {
             "title": "Vacuum Calibration Sleeve Manufacturer Ahmedabad | Jaishree Enterprise",
@@ -62,7 +68,7 @@ PRODUCTS = [
         "slug": "pistons",
         "name": "Industrial Pistons",
         "tagline": "Custom industrial pistons produced for machinery manufacturers and replacement applications.",
-        "image": IMG["components"],
+        "image": "/images/piston-cutaway.jpg",
         "order": 2,
         "published": True,
         "overview": [
@@ -93,7 +99,12 @@ PRODUCTS = [
             {"label": "Surface finish", "value": "Precision finished to requirement"},
             {"label": "Quantity", "value": "Single piece to repeat batches"},
         ],
-        "gallery": [IMG["components"], IMG["drill"], IMG["cnc"]],
+        "gallery": [
+            {"src": "/images/piston-inspection.jpg", "caption": "Piston dimensional inspection"},
+            {"src": "/images/piston-assembly.jpg", "caption": "Ring and groove assembly work"},
+            {"src": "/images/piston-cutaway.jpg", "caption": "Pistons and bores — sectional view"},
+            {"src": "/images/piston-rods-bw.jpg", "caption": "Connecting components on the workshop bench"},
+        ],
         "seo": {
             "title": "Industrial Pistons Manufacturer India | Jaishree Enterprise Ahmedabad",
             "description": "Custom industrial pistons built to drawing for machinery OEMs and replacement applications. Manufactured in Ahmedabad since 1983. Send your drawing for a quote.",
@@ -103,7 +114,7 @@ PRODUCTS = [
         "slug": "cylinders",
         "name": "Industrial Cylinders",
         "tagline": "Custom industrial cylinders and cylindrical machine components, manufactured to requirement.",
-        "image": IMG["drill"],
+        "image": "/images/cylinder-rollers.jpg",
         "order": 3,
         "published": True,
         "overview": [
@@ -133,7 +144,12 @@ PRODUCTS = [
             {"label": "Required tolerance", "value": "Per approved drawing"},
             {"label": "Quantity", "value": "Single piece to repeat batches"},
         ],
-        "gallery": [IMG["drill"], IMG["components"], IMG["hero"]],
+        "gallery": [
+            {"src": "/images/cylinder-rollers.jpg", "caption": "Cylindrical machine components"},
+            {"src": "/images/cylinder-actuator.jpg", "caption": "Rotary piston assembly — top view"},
+            {"src": "/images/cylinder-fittings-bw.jpg", "caption": "Hydraulic fittings and connections"},
+            {"src": IMG["drill"], "caption": "Precision boring and drilling operations"},
+        ],
         "seo": {
             "title": "Industrial Cylinders Manufacturer Gujarat | Jaishree Enterprise",
             "description": "Custom industrial cylinders and cylindrical machine components manufactured in Ahmedabad, Gujarat. Built to customer drawings. Request a quotation.",

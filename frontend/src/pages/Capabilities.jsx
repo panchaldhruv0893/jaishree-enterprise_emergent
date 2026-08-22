@@ -44,6 +44,7 @@ export default function Capabilities() {
 
       <section className="bg-[#F5F5F7] py-24 sm:py-32" data-testid="capabilities-grid">
         <div className="mx-auto max-w-7xl px-5 sm:px-8">
+          {confirmed.length > 0 && (
           <Stagger className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {confirmed.map((c) => {
               const Icon = ICONS[c.icon] || Settings;
@@ -56,6 +57,7 @@ export default function Capabilities() {
               );
             })}
           </Stagger>
+          )}
 
           {pending.length > 0 && (
             <div className="mt-20">

@@ -25,7 +25,10 @@ Production-ready, responsive, multi-page B2B website for Jaishree Enterprise (me
 - Full 8-page site with dark/light alternating chapters, masked hero reveal, parallax hero image, marquee, bento grids
 - Backend: content APIs, RFQ endpoint with storage upload + Resend email (verified live), admin CMS endpoints
 - Seeded CMS: 4 products, 10 capabilities (4 pending-confirmation placeholders), 4 milestones (2 editable placeholders)
-- Verified: RFQ submit via UI + curl (drawing stored, email sent, download link works), honeypot, extension validation, mobile menu, contact map
+- Real photography: 5 owner-supplied sleeve photos/renders (/images/sleeve-*) + web-sourced piston/cylinder photos (Pexels, free license) with gallery captions on all product pages
+- IndiaMART storefront linked (https://www.indiamart.com/jaishree-enterprise-ahmedabad/) on Contact page and footer, tracked via indiamart_click event
+- Bugfix: async-loaded Stagger grids (catalog, home products/capabilities) gated on data presence — framer-motion stagger children mounting after parent in-view stayed at opacity 0
+- Verified: RFQ submit via UI + curl (drawing stored, email sent, download link works), honeypot, extension validation, mobile menu, contact map, catalog rendering
 
 ## Backlog
 - P0: Owner replaces remaining placeholder imagery (pistons, cylinders, custom components) with real photos — sleeve photos DONE 2026-08-22 (5 real photos/renderings in /images/, sleeves page + home card); confirms pending capabilities (CNC, grinding, honing, welding; water-jacket/cool-neck sleeves; repair work); updates milestone placeholders

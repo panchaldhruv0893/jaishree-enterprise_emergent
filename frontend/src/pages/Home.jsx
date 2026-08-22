@@ -181,6 +181,7 @@ function FeaturedProducts() {
             </Link>
           </FadeUp>
         </div>
+        {products.length > 0 && (
         <Stagger className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {products.map((p) => (
             <StaggerItem key={p.slug}>
@@ -202,6 +203,7 @@ function FeaturedProducts() {
             </StaggerItem>
           ))}
         </Stagger>
+        )}
       </div>
     </section>
   );
@@ -318,6 +320,7 @@ function CapabilitiesOverview() {
             every enquiry, from a single replacement piece to repeat production.
           </p>
         </FadeUp>
+        {caps.length > 0 && (
         <Stagger className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {caps.map((c) => {
             const Icon = CAP_ICONS[c.icon] || Settings;
@@ -330,6 +333,7 @@ function CapabilitiesOverview() {
             );
           })}
         </Stagger>
+        )}
         <FadeUp delay={0.2}>
           <Link to="/capabilities" data-testid="capabilities-view-all" className="mt-10 inline-flex items-center gap-2 text-sm font-semibold text-brand hover:gap-3 transition-all duration-200">
             Capabilities & quality in detail <ArrowRight size={15} />

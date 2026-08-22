@@ -1,4 +1,4 @@
-import { Mail, MapPin } from "lucide-react";
+import { Mail, MapPin, Store } from "lucide-react";
 import SEO, { breadcrumbLd } from "@/components/SEO";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import RFQForm from "@/components/RFQForm";
@@ -50,6 +50,18 @@ export default function Contact() {
                 >
                   <Mail size={15} /> {COMPANY.email}
                 </a>
+                <div className="mt-4">
+                  <a
+                    href={COMPANY.indiamart}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-testid="contact-indiamart-link"
+                    onClick={() => trackEvent("indiamart_click", { location: "contact_page" })}
+                    className="inline-flex items-center gap-2 rounded-full border border-black/15 px-5 py-2.5 text-xs font-semibold text-neutral-800 hover:border-brand hover:text-brand transition-colors duration-200"
+                  >
+                    <Store size={14} /> Find us on IndiaMART
+                  </a>
+                </div>
               </div>
             </FadeUp>
 

@@ -215,12 +215,24 @@ export default function ProductDetail() {
           <FadeUp>
             <h2 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-neutral-900 mb-14">Precision, up close.</h2>
           </FadeUp>
-          <Stagger className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            {product.gallery.map((src, i) => (
-              <StaggerItem key={i} className={`overflow-hidden rounded-3xl ${i === 0 ? "sm:col-span-2 sm:row-span-1" : ""}`}>
-                <img src={src} alt={`${product.name} — detail ${i + 1}`} className={`w-full object-cover hover:scale-105 transition-transform duration-700 ${i === 0 ? "h-80" : "h-80"}`} loading="lazy" />
-              </StaggerItem>
-            ))}
+          <Stagger className={`grid grid-cols-1 gap-6 ${product.gallery.length === 4 ? "sm:grid-cols-2" : "sm:grid-cols-3"}`}>
+            {product.gallery.map((g, i) => {
+              const src = typeof g === "string" ? g : g.src;
+              const caption = typeof g === "string" ? null : g.caption;
+              const span = i === 0 || (product.gallery.length === 4 && i === 3) ? "sm:col-span-2" : "";
+              return (
+                <StaggerItem key={i} className={span}>
+                  <figure className="group overflow-hidden rounded-3xl relative">
+                    <img src={src} alt={caption || `${product.name} — detail ${i + 1}`} className="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-700" loading="lazy" />
+                    {caption && (
+                      <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent px-5 pt-10 pb-4 text-xs font-medium text-white/90" data-testid={`gallery-caption-${i}`}>
+                        {caption}
+                      </figcaption>
+                    )}
+                  </figure>
+                </StaggerItem>
+              );
+            })}
           </Stagger>
           <FadeUp delay={0.2}>
             <p className="mt-6 text-xs text-neutral-400">

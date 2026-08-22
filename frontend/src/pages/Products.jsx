@@ -43,6 +43,7 @@ export default function Products() {
         <div className="mx-auto max-w-7xl px-5 sm:px-8">
           <Chapter number="01" label="Catalog" />
           {!loaded && <p className="text-sm text-neutral-400">Loading products…</p>}
+          {products.length > 0 && (
           <Stagger className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {products.map((p) => (
               <StaggerItem key={p.slug}>
@@ -86,6 +87,7 @@ export default function Products() {
               </StaggerItem>
             ))}
           </Stagger>
+          )}
         </div>
       </section>
     </>

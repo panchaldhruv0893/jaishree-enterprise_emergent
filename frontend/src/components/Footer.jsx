@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Mail, MapPin } from "lucide-react";
+import { Mail, MapPin, Store } from "lucide-react";
 import { COMPANY, NAV_LINKS, EXPERIENCE } from "@/data/content";
 import { trackEvent } from "@/lib/analytics";
 
@@ -31,6 +31,16 @@ export default function Footer() {
                 {COMPANY.addressLines[1]}
               </span>
             </p>
+            <a
+              href={COMPANY.indiamart}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-testid="footer-indiamart-link"
+              onClick={() => trackEvent("indiamart_click", { location: "footer" })}
+              className="mt-4 inline-flex items-center gap-2 text-sm text-white/60 hover:text-brand transition-colors duration-200"
+            >
+              <Store size={15} /> Find us on IndiaMART
+            </a>
           </div>
 
           <div className="md:col-span-3">
