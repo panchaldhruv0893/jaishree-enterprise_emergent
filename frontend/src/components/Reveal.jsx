@@ -49,13 +49,14 @@ export const Stagger = ({ children, className = "" }) => (
   </motion.div>
 );
 
-export const StaggerItem = ({ children, className = "" }) => (
+export const StaggerItem = ({ children, className = "", ...rest }) => (
   <motion.div
     variants={{
       hidden: { opacity: 0, y: 28 },
       show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: EASE } },
     }}
     className={className}
+    {...rest}
   >
     {children}
   </motion.div>

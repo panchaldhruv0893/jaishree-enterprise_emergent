@@ -86,6 +86,30 @@ function Hero() {
   );
 }
 
+const FACTS = [
+  { id: "founded", value: "1983", label: "Founded" },
+  { id: "families", value: "4", label: "Product Families" },
+  { id: "years", value: "40+", label: "Years Manufacturing" },
+  { id: "base", value: "Ahmedabad", label: "Gujarat, India" },
+];
+
+function QuickFacts() {
+  return (
+    <section className="bg-white border-b border-black/8" data-testid="home-quick-facts">
+      <div className="mx-auto max-w-7xl px-5 sm:px-8">
+        <Stagger className="grid grid-cols-2 sm:grid-cols-4 divide-x divide-y sm:divide-y-0 divide-black/8">
+          {FACTS.map((f) => (
+            <StaggerItem key={f.id} className="py-10 sm:py-14 px-4 sm:px-8" data-testid={`fact-${f.id}`}>
+              <p className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-neutral-900">{f.value}</p>
+              <p className="mt-1 text-xs sm:text-sm uppercase tracking-[0.15em] text-neutral-500">{f.label}</p>
+            </StaggerItem>
+          ))}
+        </Stagger>
+      </div>
+    </section>
+  );
+}
+
 function Intro() {
   return (
     <section className="bg-white py-28 sm:py-36" data-testid="home-intro">
@@ -102,7 +126,7 @@ function Intro() {
           </FadeUp>
           <FadeUp delay={0.15}>
             <p className="mt-8 text-base sm:text-lg text-neutral-600 leading-relaxed max-w-2xl">
-              From our manufacturing base in Tavdipura, Shahibaug, we produce vacuum calibration
+              From our manufacturing base in Devjipura, Dudheshwar, we produce vacuum calibration
               sleeves, industrial pistons, cylinders and custom precision-machined components —
               built to customer drawings and application requirements.
             </p>
@@ -357,7 +381,7 @@ function LocationSection() {
           </FadeUp>
           <FadeUp delay={0.15}>
             <p className="mt-6 text-base sm:text-lg text-neutral-600 leading-relaxed max-w-lg">
-              Our facility in Tavdipura, Shahibaug places us within reach of Gujarat's GIDC industrial
+              Our facility in Devjipura, Dudheshwar places us within reach of Gujarat's GIDC industrial
               clusters — close to the OEMs and manufacturers we serve.
             </p>
             <p className="mt-6 flex items-start gap-2 text-sm text-neutral-700">
@@ -425,6 +449,7 @@ export default function Home() {
         path="/"
       />
       <Hero />
+      <QuickFacts />
       <Intro />
       <Heritage />
       <EditorialMarquee />

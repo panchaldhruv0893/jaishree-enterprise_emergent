@@ -11,7 +11,7 @@ export const COMPANY = {
   name: "Jaishree Enterprise",
   email: "jaishreeenterprise@yahoo.com",
   indiamart: "https://www.indiamart.com/jaishree-enterprise-ahmedabad/",
-  addressLines: ["Tavdipura, Shahibaug", "Ahmedabad, Gujarat, India"],
+  addressLines: ["328-5, Devjipura, Dudheshwar", "Ahmedabad, Gujarat 380004, India"],
   founded: "1983",
 };
 

@@ -52,7 +52,7 @@ export default function ProductDetail() {
       description: product.tagline,
       image: product.image,
       brand: { "@type": "Organization", name: "Jaishree Enterprise" },
-      manufacturer: { "@type": "Organization", name: "Jaishree Enterprise", address: "Tavdipura, Shahibaug, Ahmedabad, Gujarat, India" },
+      manufacturer: { "@type": "Organization", name: "Jaishree Enterprise", address: "328-5, Devjipura, Dudheshwar, Ahmedabad, Gujarat 380004, India" },
     },
     ...(isSleeves
       ? [{

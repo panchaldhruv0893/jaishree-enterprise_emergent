@@ -11,7 +11,7 @@ export default function Contact() {
     <>
       <SEO
         title="Request a Quote | Contact Jaishree Enterprise Ahmedabad"
-        description="Request a quotation for vacuum calibration sleeves, industrial pistons, cylinders or custom machinery parts. Upload your drawing. Jaishree Enterprise, Tavdipura, Shahibaug, Ahmedabad, Gujarat."
+        description="Request a quotation for vacuum calibration sleeves, industrial pistons, cylinders or custom machinery parts. Upload your drawing. Jaishree Enterprise, Devjipura, Dudheshwar, Ahmedabad, Gujarat 380004."
         path="/contact"
         jsonLd={breadcrumbLd([{ label: "Home", to: "/" }, { label: "Contact" }])}
       />
@@ -68,13 +68,13 @@ export default function Contact() {
             <FadeUp delay={0.1}>
               <div className="overflow-hidden rounded-3xl border border-black/10 shadow-sm" data-testid="contact-map">
                 <iframe
-                  title="Map — Tavdipura, Shahibaug, Ahmedabad"
-                  src="https://www.openstreetmap.org/export/embed.html?bbox=72.5650%2C23.0350%2C72.6150%2C23.0750&layer=mapnik&marker=23.0550%2C72.5925"
+                  title="Map — Devjipura, Dudheshwar, Ahmedabad"
+                  src="https://www.openstreetmap.org/export/embed.html?bbox=72.5700%2C23.0300%2C72.6100%2C23.0650&layer=mapnik&marker=23.0470%2C72.5900"
                   className="h-80 w-full border-0"
                   loading="lazy"
                 />
               </div>
-              <p className="mt-3 text-xs text-neutral-400">Map centered on Tavdipura / Shahibaug, Ahmedabad.</p>
+              <p className="mt-3 text-xs text-neutral-400">Map centered on Devjipura, Dudheshwar, Ahmedabad.</p>
             </FadeUp>
 
             <FadeUp delay={0.15}>

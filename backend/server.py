@@ -5,17 +5,19 @@ import os
 import re
 import time
 import uuid
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from html import escape
 from html.parser import HTMLParser
 from pathlib import Path
 from typing import Optional
 from urllib.parse import urlparse
 
+import bcrypt
 import httpx
+import jwt
 import requests
 from dotenv import load_dotenv
-from fastapi import APIRouter, FastAPI, File, Form, Header, HTTPException, Request, Response, UploadFile
+from fastapi import APIRouter, Depends, FastAPI, File, Form, HTTPException, Request, Response, UploadFile
 from motor.motor_asyncio import AsyncIOMotorClient
 from starlette.middleware.cors import CORSMiddleware
 
@@ -28,6 +30,7 @@ db = client[os.environ["DB_NAME"]]
 
 app = FastAPI()
 api_router = APIRouter(prefix="/api")
+auth_router = APIRouter(prefix="/api/auth")
 admin_router = APIRouter(prefix="/api/admin")
 
 logger = logging.getLogger(__name__)
@@ -190,6 +193,7 @@ async def seed_if_empty():
 @app.on_event("startup")
 async def startup():
     await seed_if_empty()
+    await seed_owner()
     try:
         await asyncio.to_thread(init_storage)
         logger.info("Object storage initialized")
@@ -332,7 +336,7 @@ async def create_quote(
                     f'<p style="font-size:14px">Thank you for your enquiry regarding '
                     f'<strong>{escape(doc["product"])}</strong>. Our team will review your requirement '
                     f'and respond shortly.</p>'
-                    f'<p style="font-size:14px">Jaishree Enterprise, Tavdipura, Shahibaug, Ahmedabad, Gujarat, India</p>'
+                    f'<p style="font-size:14px">Jaishree Enterprise, 328-5, Devjipura, Dudheshwar, Ahmedabad, Gujarat 380004, India</p>'
                     f'<p style="font-size:12px;color:#888">Sent by Jaishree Enterprise. We never ask for '
                     f'passwords or card details by email.</p></td></tr></table>')
     await send_email(to=doc["email"], subject=confirm_subject, html=confirm_html)
@@ -350,24 +354,133 @@ async def download_drawing(quote_id: str):
                     headers={"Content-Disposition": f'attachment; filename="{record.get("drawing_name", "drawing")}"'})
 
 
+# ---------------------------------------------------------------- owner auth (JWT)
+JWT_SECRET = os.environ["JWT_SECRET"]
+JWT_ALGORITHM = "HS256"
+OWNER_LOGIN_EMAIL = os.environ["OWNER_LOGIN_EMAIL"].strip().lower()
+OWNER_LOGIN_PASSWORD = os.environ["OWNER_LOGIN_PASSWORD"]
+_login_attempts: dict = {}
+
+
+def hash_password(password: str) -> str:
+    return bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
+
+
+def verify_password(plain: str, hashed: str) -> bool:
+    try:
+        return bcrypt.checkpw(plain.encode("utf-8"), hashed.encode("utf-8"))
+    except ValueError:
+        return False
+
+
+def create_access_token(user_id: str, email: str) -> str:
+    payload = {
+        "sub": user_id, "email": email, "type": "access",
+        "exp": datetime.now(timezone.utc) + timedelta(hours=12),
+    }
+    return jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
+
+
+async def seed_owner():
+    existing = await db.users.find_one({"email": OWNER_LOGIN_EMAIL})
+    if existing is None:
+        await db.users.insert_one({
+            "id": str(uuid.uuid4()), "email": OWNER_LOGIN_EMAIL,
+            "password_hash": hash_password(OWNER_LOGIN_PASSWORD),
+            "name": "Owner", "role": "owner",
+            "created_at": datetime.now(timezone.utc).isoformat(),
+        })
+    elif not verify_password(OWNER_LOGIN_PASSWORD, existing["password_hash"]):
+        await db.users.update_one(
+            {"email": OWNER_LOGIN_EMAIL},
+            {"$set": {"password_hash": hash_password(OWNER_LOGIN_PASSWORD)}},
+        )
+
+
+async def get_current_owner(request: Request) -> dict:
+    token = request.cookies.get("access_token")
+    if not token:
+        header = request.headers.get("Authorization", "")
+        if header.startswith("Bearer "):
+            token = header[7:]
+    if not token:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    try:
+        payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+        if payload.get("type") != "access":
+            raise HTTPException(status_code=401, detail="Invalid token type")
+    except jwt.ExpiredSignatureError:
+        raise HTTPException(status_code=401, detail="Session expired. Please sign in again.")
+    except jwt.InvalidTokenError:
+        raise HTTPException(status_code=401, detail="Invalid token")
+    user = await db.users.find_one({"id": payload.get("sub")}, {"_id": 0, "password_hash": 0})
+    if not user:
+        raise HTTPException(status_code=401, detail="User not found")
+    return user
+
+
+def _set_auth_cookie(response: Response, token: str):
+    response.set_cookie(key="access_token", value=token, httponly=True, secure=True,
+                        samesite="none", max_age=43200, path="/")
+
+
+@auth_router.post("/login")
+async def login(request: Request, response: Response, payload: dict):
+    email = (payload.get("email") or "").strip().lower()
+    password = payload.get("password") or ""
+    ident = f"{request.client.host if request.client else 'unknown'}:{email}"
+    now = time.time()
+    attempts = [t for t in _login_attempts.get(ident, []) if now - t < 900]
+    if len(attempts) >= 5:
+        raise HTTPException(status_code=429, detail="Too many attempts. Try again in 15 minutes.")
+    user = await db.users.find_one({"email": email})
+    if not user or not verify_password(password, user["password_hash"]):
+        attempts.append(now)
+        _login_attempts[ident] = attempts
+        raise HTTPException(status_code=401, detail="Invalid email or password")
+    _login_attempts.pop(ident, None)
+    token = create_access_token(user["id"], user["email"])
+    _set_auth_cookie(response, token)
+    return {"id": user["id"], "email": user["email"], "name": user.get("name"), "role": user.get("role"), "token": token}
+
+
+@auth_router.get("/me")
+async def me(owner: dict = Depends(get_current_owner)):
+    return owner
+
+
+@auth_router.post("/logout")
+async def logout(response: Response):
+    response.delete_cookie(key="access_token", path="/")
+    return {"status": "ok"}
+
+
+@auth_router.post("/change-password")
+async def change_password(payload: dict, owner: dict = Depends(get_current_owner)):
+    current = payload.get("current_password") or ""
+    new = payload.get("new_password") or ""
+    if len(new) < 8:
+        raise HTTPException(status_code=422, detail="New password must be at least 8 characters")
+    user = await db.users.find_one({"id": owner["id"]})
+    if not verify_password(current, user["password_hash"]):
+        raise HTTPException(status_code=401, detail="Current password is incorrect")
+    await db.users.update_one({"id": owner["id"]}, {"$set": {"password_hash": hash_password(new)}})
+    return {"status": "ok"}
+
+
 # ---------------------------------------------------------------- admin (owner CMS)
-ADMIN_TOKEN = os.environ.get("ADMIN_TOKEN")
-
-
-def require_admin(x_admin_token: Optional[str]):
-    if not ADMIN_TOKEN or x_admin_token != ADMIN_TOKEN:
-        raise HTTPException(status_code=403, detail="Forbidden")
-
-
 @admin_router.get("/quotes")
-async def admin_quotes(x_admin_token: Optional[str] = Header(None)):
-    require_admin(x_admin_token)
+async def admin_quotes(owner: dict = Depends(get_current_owner)):
     return await db.quotes.find({}, {"_id": 0}).sort("created_at", -1).to_list(500)
 
 
+@admin_router.get("/products")
+async def admin_list_products(owner: dict = Depends(get_current_owner)):
+    return await db.products.find({}, {"_id": 0}).sort("order", 1).to_list(100)
+
+
 @admin_router.post("/products")
-async def admin_create_product(payload: dict, x_admin_token: Optional[str] = Header(None)):
-    require_admin(x_admin_token)
+async def admin_create_product(payload: dict, owner: dict = Depends(get_current_owner)):
     if not payload.get("slug") or not payload.get("name"):
         raise HTTPException(status_code=422, detail="slug and name required")
     payload.setdefault("published", True)
@@ -376,32 +489,54 @@ async def admin_create_product(payload: dict, x_admin_token: Optional[str] = Hea
 
 
 @admin_router.put("/products/{slug}")
-async def admin_update_product(slug: str, payload: dict, x_admin_token: Optional[str] = Header(None)):
-    require_admin(x_admin_token)
+async def admin_update_product(slug: str, payload: dict, owner: dict = Depends(get_current_owner)):
     payload.pop("slug", None)
-    await db.products.update_one({"slug": slug}, {"$set": payload})
+    result = await db.products.update_one({"slug": slug}, {"$set": payload})
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Product not found")
     return {"status": "ok"}
 
 
+@admin_router.get("/capabilities")
+async def admin_list_capabilities(owner: dict = Depends(get_current_owner)):
+    return await db.capabilities.find({}, {"_id": 0}).sort("order", 1).to_list(100)
+
+
 @admin_router.post("/capabilities")
-async def admin_upsert_capability(payload: dict, x_admin_token: Optional[str] = Header(None)):
-    require_admin(x_admin_token)
+async def admin_upsert_capability(payload: dict, owner: dict = Depends(get_current_owner)):
     cid = payload.get("id") or str(uuid.uuid4())
     payload["id"] = cid
     await db.capabilities.update_one({"id": cid}, {"$set": payload}, upsert=True)
     return {"status": "ok", "id": cid}
 
 
+@admin_router.delete("/capabilities/{cid}")
+async def admin_delete_capability(cid: str, owner: dict = Depends(get_current_owner)):
+    await db.capabilities.delete_one({"id": cid})
+    return {"status": "ok"}
+
+
+@admin_router.get("/milestones")
+async def admin_list_milestones(owner: dict = Depends(get_current_owner)):
+    return await db.milestones.find({}, {"_id": 0}).sort("order", 1).to_list(100)
+
+
 @admin_router.post("/milestones")
-async def admin_upsert_milestone(payload: dict, x_admin_token: Optional[str] = Header(None)):
-    require_admin(x_admin_token)
+async def admin_upsert_milestone(payload: dict, owner: dict = Depends(get_current_owner)):
     mid = payload.get("id") or str(uuid.uuid4())
     payload["id"] = mid
     await db.milestones.update_one({"id": mid}, {"$set": payload}, upsert=True)
     return {"status": "ok", "id": mid}
 
 
+@admin_router.delete("/milestones/{mid}")
+async def admin_delete_milestone(mid: str, owner: dict = Depends(get_current_owner)):
+    await db.milestones.delete_one({"id": mid})
+    return {"status": "ok"}
+
+
 app.include_router(api_router)
+app.include_router(auth_router)
 app.include_router(admin_router)
 
 app.add_middleware(

@@ -12,6 +12,7 @@ import Capabilities from "@/pages/Capabilities";
 import About from "@/pages/About";
 import History from "@/pages/History";
 import Contact from "@/pages/Contact";
+import AdminRoot from "@/pages/admin/AdminRoot";
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -21,26 +22,35 @@ const ScrollToTop = () => {
   return null;
 };
 
+const Site = () => (
+  <>
+    <Navbar />
+    <main id="main-content">
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/products" element={<Products />} />
+        <Route path="/products/:slug" element={<ProductDetail />} />
+        <Route path="/industries" element={<Industries />} />
+        <Route path="/capabilities" element={<Capabilities />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/history" element={<History />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="*" element={<Home />} />
+      </Routes>
+    </main>
+    <Footer />
+  </>
+);
+
 function App() {
   return (
     <ReactLenis root options={{ lerp: 0.09, duration: 1.15 }}>
       <BrowserRouter>
         <ScrollToTop />
-        <Navbar />
-        <main id="main-content">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/products" element={<Products />} />
-            <Route path="/products/:slug" element={<ProductDetail />} />
-            <Route path="/industries" element={<Industries />} />
-            <Route path="/capabilities" element={<Capabilities />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/history" element={<History />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="*" element={<Home />} />
-          </Routes>
-        </main>
-        <Footer />
+        <Routes>
+          <Route path="/admin" element={<AdminRoot />} />
+          <Route path="/*" element={<Site />} />
+        </Routes>
         <Toaster position="top-center" richColors />
       </BrowserRouter>
     </ReactLenis>
