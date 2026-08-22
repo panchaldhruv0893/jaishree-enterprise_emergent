@@ -1,0 +1,117 @@
+{
+  "theme": "hybrid",
+  "design_philosophy": "Apple's design principles applied to B2B manufacturing. Minimal, premium, spacious, product-focused. Large confident typography, generous white space, strong hierarchy, alternating light/dark sections, macro imagery.",
+  "typography": {
+    "headings": {
+      "font_family": "Manrope, sans-serif",
+      "weights": ["400", "500", "700"],
+      "tracking": "tracking-tight",
+      "usage": "Use for all H1-H4. Emphasize negative letter-spacing for premium feel."
+    },
+    "body": {
+      "font_family": "Inter, sans-serif",
+      "weights": ["400", "500"],
+      "line_height": "leading-relaxed",
+      "usage": "Clean, highly readable body copy and UI elements."
+    },
+    "hierarchy": {
+      "h1": "text-5xl sm:text-6xl+ tracking-tighter leading-[1.1]",
+      "h2": "text-3xl sm:text-4xl tracking-tight",
+      "h3": "text-xl sm:text-2xl font-medium",
+      "body": "text-base sm:text-lg text-neutral-600 dark:text-neutral-400"
+    }
+  },
+  "colors": {
+    "archetype": "Swiss & High-Contrast (Industrial Variation)",
+    "light_mode": {
+      "background": "#FFFFFF",
+      "surface": "#F5F5F7",
+      "border": "rgba(0, 0, 0, 0.05)",
+      "text": "#0A0A0A",
+      "text_muted": "#6B7280"
+    },
+    "dark_mode": {
+      "background": "#000000",
+      "surface": "#111111",
+      "border": "rgba(255, 255, 255, 0.1)",
+      "text": "#FFFFFF",
+      "text_muted": "#A1A1AA"
+    },
+    "accent": {
+      "primary": "#0066CC",
+      "primary_hover": "#0052A3",
+      "metallic": "#8E8E93"
+    }
+  },
+  "layouts": {
+    "spacing": "Generous Spacing Philosophy. Use py-24 to py-32 for section padding. Substantial gaps (gap-8, gap-12).",
+    "bento_grid": "Use an asymmetric 9-cell grid (grid-cols-1 md:grid-cols-3) for capabilities and feature summaries. Minimal borders, solid backgrounds, no heavy shadows.",
+    "hero": "Center-aligned or heavy left-aligned massive typography, followed by a full-width macro video/image container with subtle parallax.",
+    "navigation": "Translucent sticky nav. backdrop-blur-xl bg-white/70 (light) or bg-black/70 (dark). Must have prominent 'Request a Quote' CTA.",
+    "alternating_sections": "Switch between #000000 and #FFFFFF backgrounds to create distinct chapters."
+  },
+  "components": {
+    "cards": "Flat solid surfaces or bento cells. border-radius: 16px (rounded-2xl). border-border. Hover: slight transform (-translate-y-1) and subtle shadow increase.",
+    "buttons": "Pill-shaped (rounded-full) for primary marketing CTAs. Standard rectangles (rounded-lg) for UI/Form elements.",
+    "forms": "Use Shadcn UI for RFQ form. Clean inputs, clear labels, minimal borders.",
+    "marquee": "Use react-fast-marquee for an 'Editorial Ribbon' of client industries/materials. Slow, smooth drift. font-mono or uppercase minimal text."
+  },
+  "motion": {
+    "scrolling": "MANDATORY: use @studio-freight/react-lenis for smooth momentum scrolling. It gives the site a premium weight.",
+    "scroll_reveals": "Use framer-motion for line-by-line text reveals in the hero, and staggered fade-up for bento grids.",
+    "micro_interactions": "Image scale-up on hover (overflow-hidden wrapper, hover:scale-105 on image)."
+  },
+  "image_urls": [
+    {
+      "category": "hero",
+      "url": "https://images.pexels.com/photos/31970889/pexels-photo-31970889.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      "description": "Textured metal object macro, dark and premium. Use for dark hero section."
+    },
+    {
+      "category": "product_cylinders",
+      "url": "https://images.pexels.com/photos/185545/pexels-photo-185545.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      "description": "Detailed close-up of shiny engine/metal components."
+    },
+    {
+      "category": "capabilities_cnc",
+      "url": "https://images.unsplash.com/photo-1713371398484-cc4e4f6a262a?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjY2NzV8MHwxfHNlYXJjaHw0fHxwcmVjaXNpb24lMjBjbmMlMjBtYWNoaW5pbmclMjBtZXRhbGxpY3xlbnwwfHx8fDE3ODc0MDkyMDh8MA&ixlib=rb-4.1.0&q=85",
+      "description": "CNC machine cutting metal."
+    },
+    {
+      "category": "history_heritage",
+      "url": "https://images.pexels.com/photos/13083354/pexels-photo-13083354.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      "description": "Close-up view of a detailed architectural blueprint. Use for 1983 heritage section."
+    },
+    {
+      "category": "facility",
+      "url": "https://images.pexels.com/photos/6034676/pexels-photo-6034676.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      "description": "Aerial view of modern industrial factory."
+    },
+    {
+      "category": "precision_drilling",
+      "url": "https://images.pexels.com/photos/47091/drill-milling-milling-machine-drilling-47091.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      "description": "Macro shot of a drilling head showcasing precision engineering."
+    }
+  ],
+  "pages_structure": {
+    "home": "Hero with signature on-load reveal -> 'Engineering Since 1983' -> Marquee -> Bento Grid of Products -> Capabilities -> RFQ CTA.",
+    "products_catalog": "Grid of specific categories: Vacuum Calibration Sleeves, Pistons, Cylinders, Custom Components.",
+    "product_detail": "Spec tables, macro gallery, inline RFQ form.",
+    "about_history": "Timeline starting from 1983, highlighting manufacturing experience.",
+    "rfq_contact": "Form with file upload for drawings, embedded map, contact details."
+  },
+  "UNIVERSAL_GUIDELINES_FOR_MAIN_AGENT": [
+    "You tend to converge toward generic, 'on distribution' outputs. Avoid this: make creative, distinctive frontends that surprise and delight.",
+    "Dark colors look good when used independently without gradients. DO NOT use dark colors as gradients.",
+    "Don't make generic centered layouts, simplistic gradients, and uniform styling. Use bento grids and asymmetric layouts.",
+    "Create depth through layered design elements with z-index hierarchy and backdrop blurs (glass-morphism).",
+    "You MUST NOT apply universal transition. Eg: transition: all. Always add transitions for specific interactive elements.",
+    "You MUST NOT center align the app container in global CSS. This disrupts reading flow.",
+    "Always use modern button styles like pill-shaped (rounded-full) for primary CTAs.",
+    "NEVER use AI assistant Emoji characters like 🤖🧠💭💡🔮🎯 etc for icons. Use lucide-react.",
+    "Use 2-3x more spacing than feels comfortable (py-24, gap-8). Cramped designs look cheap.",
+    "Use @studio-freight/react-lenis for smooth scrolling, framer-motion for reveals.",
+    "All interactive and key informational elements MUST include a data-testid attribute.",
+    "CRITICAL: DO NOT use complete transparent background in header or dropdowns over content."
+  ]
+}

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://jaishree-engineering.preview.emergentagent.com/sitemap.xml
