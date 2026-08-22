@@ -14,7 +14,7 @@ PRODUCTS = [
         "slug": "vacuum-calibration-sleeves",
         "name": "Vacuum Calibration Sleeves",
         "tagline": "Engineered for accurate pipe sizing, controlled cooling and a reliable surface finish in pipe extrusion lines.",
-        "image": IMG["cnc"],
+        "image": "/images/sleeve-family.jpg",
         "order": 1,
         "published": True,
         "overview": [
@@ -51,7 +51,8 @@ PRODUCTS = [
             {"label": "Required tolerance", "value": "Per approved drawing"},
             {"label": "Drawing or sample reference", "value": "Accepted — PDF, DWG, DXF or physical sample"},
         ],
-        "gallery": [IMG["cnc"], IMG["drill"], IMG["hero"]],
+        "gallery": ["/images/sleeve-family.jpg", "/images/sleeve-installed.jpg", "/images/sleeve-unit.jpg", "/images/sleeve-cad-flow.webp", "/images/sleeve-cad-render.jpeg"],
+        "real_photos": True,
         "seo": {
             "title": "Vacuum Calibration Sleeve Manufacturer Ahmedabad | Jaishree Enterprise",
             "description": "Vacuum calibration sleeves manufactured in Ahmedabad for PVC and HDPE pipe extrusion. Custom dimensions, built to drawing, since 1983. Request a quote.",

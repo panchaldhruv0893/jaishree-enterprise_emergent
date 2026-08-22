@@ -223,7 +223,11 @@ export default function ProductDetail() {
             ))}
           </Stagger>
           <FadeUp delay={0.2}>
-            <p className="mt-6 text-xs text-neutral-400">Representative industrial imagery. Product photographs will be replaced with actual component photography.</p>
+            <p className="mt-6 text-xs text-neutral-400">
+              {product.real_photos
+                ? "Actual Jaishree Enterprise components and engineering renders."
+                : "Representative industrial imagery. Product photographs will be replaced with actual component photography."}
+            </p>
           </FadeUp>
         </div>
       </section>

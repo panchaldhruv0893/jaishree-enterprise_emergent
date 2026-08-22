@@ -28,6 +28,6 @@ Production-ready, responsive, multi-page B2B website for Jaishree Enterprise (me
 - Verified: RFQ submit via UI + curl (drawing stored, email sent, download link works), honeypot, extension validation, mobile menu, contact map
 
 ## Backlog
-- P0: Owner replaces placeholder imagery with real product photography; confirms pending capabilities (CNC, grinding, honing, welding; water-jacket/cool-neck sleeves; repair work); updates milestone placeholders
+- P0: Owner replaces remaining placeholder imagery (pistons, cylinders, custom components) with real photos — sleeve photos DONE 2026-08-22 (5 real photos/renderings in /images/, sleeves page + home card); confirms pending capabilities (CNC, grinding, honing, welding; water-jacket/cool-neck sleeves; repair work); updates milestone placeholders
 - P1: Owner-facing CMS UI (currently API + token only); phone number / street address when supplied
 - P2: Real product photos in WebP/AVIF pipeline; blog/technical resources for SEO; WhatsApp CTA
